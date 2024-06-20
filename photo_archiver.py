@@ -3,6 +3,7 @@ import os
 import datetime
 import time
 import shutil
+import exiftool
 
 files = glob.glob(r'/mnt/drive/buffer/Camera/*.*')
 
@@ -11,7 +12,16 @@ print(len(files))
 TODAY = datetime.datetime.now().timestamp()
 
 for file_path in files:
-    file_created_time = os.path.getmtime(file_path)
+    with exiftool.ExifToolHelper() as et:
+        metadata = et.get_metadata(file_path)[0]
+        file_created_time = None
+        if "EXIF:DateTimeOriginal" in metadata.keys():
+            file_created_time = metadata["EXIF:DateTimeOriginal"]
+        elif "QuickTime:CreateDate" in metadata.keys():
+            file_created_time = metadata["QuickTime:CreateDate"]
+        else:
+            print(f"No creation date for file: {file_path}")
+
     seconds_since_created = TODAY - file_created_time
 
     if seconds_since_created > 60*60*24*90: #90 days
