@@ -22,6 +22,7 @@ for file_path in files:
         else:
             print(f"No creation date for file: {file_path}")
 
+    file_created_time = datetime.datetime.strptime(file_created_time, "%Y:%m:%d %H:%M:%S")    
     seconds_since_created = TODAY - file_created_time
 
     if seconds_since_created > 60*60*24*90: #90 days
