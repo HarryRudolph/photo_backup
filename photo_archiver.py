@@ -5,7 +5,7 @@ import time
 import shutil
 import exiftool
 
-files = glob.glob(r'/mnt/drive/buffer/Camera/*.*')
+files = glob.glob(r'/mnt/drive/images/buffer/Camera/*.*')
 
 print(len(files))
 
